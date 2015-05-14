@@ -1,8 +1,8 @@
-motor_d = 36;
+motor_d = 35.5;
 wall_t = 2;
 wall_h = 18;
 base_h = 5;
-base_d = 3 * motor_d;
+base_d = 1.1 * sqrt(2) * (motor_d + 2*wall_t);
 
 wires_d = 8;
 
@@ -11,7 +11,7 @@ sucker_slot_d = 8;
 sucker_neck_h = 3.2;
 sucker_head_d = 15;
 
-sucker_pos = base_d/2 - 0.6*sucker_neck_d;
+sucker_pos = base_d/sqrt(2) - 0.8*sucker_neck_d;
 
 sucker_cup_h = 9;
 sucker_cup_d = 42;
@@ -50,16 +50,17 @@ module sucker_cup() {
 }
 
 module suckers() {
-    for(a = [0:120:240]) {
+    for(a = [0:90:270]) {
         rotate(a=a) translate([sucker_pos,0,-sucker_cup_h]) color("lightcyan") sucker_cup();
     }
 }
 
 module base() {
     difference() {
-        cylinder(h=base_h, d=base_d, $fn=6);
+        rotate(45) translate([-base_d/2, -base_d/2,0]) 
+            cube(size=[base_d, base_d, base_h]);
 
-        for(x=[0:120:240]) {
+        for(x=[0:90:270]) {
             rotate (a=x) {
                 sucker_hole();
             }
